@@ -74,7 +74,7 @@ def shuffle_and_sort_func(mapped_data):
     return grouped_data
 
 def reduce_func(grouped_data):
-    return {customer_id: sum(amounts) for customer_id, values in grouped_data.items()}
+    return {customer_id: sum(amounts) for customer_id, amounts in grouped_data.items()}
 
 def map_reduce(transactions):
     with Pool() as pool:

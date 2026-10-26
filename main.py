@@ -12,6 +12,11 @@ transactions_data = [
 ]
 '''
 transactions_data = [
+    "Alice, 20",
+    "Bob, 50",
+    "Alice, 30",
+    "Bob, 20",
+    "Charlie, 40"
 ]
 
 def main():
