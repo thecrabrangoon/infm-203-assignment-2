@@ -33,10 +33,15 @@ Reduce function:
 Input: grouped data from shuffle and sort function
 Output: map/dict of customer IDs to total transaction amounts
 '''
-
+from collections import defaultdict
+from multiprocessing import Pool
 import re
 import sys
 
+transaction_format = re.compile(r"^(\w*)\, (\d*)$")
+
+'''
+POSSIBLY DELETE THIS
 # TODO: Clean this up, I'm not sure this is really perfect
 def get_user_input():
     args = sys.argv
@@ -48,8 +53,9 @@ def get_user_input():
     except Exception as e:
         raise Exception from e
     return args[1]
+'''
 
-def map_func(transaction, transaction_format):
+def map_func(transaction):
     transaction_match = re.fullmatch(transaction_format, transaction)
     try:
         customer_id, amount_str = transaction_match.group(1, 2)
@@ -67,19 +73,15 @@ def shuffle_and_sort_func(mapped_data):
         grouped_data[key].append(value)
     return grouped_data
 
-def map_reduce():
-    transanction_format = re.compile(r"^(\w*)\, (\d*)$")
-    map_func(transaction, transaction_format)
-    # TODO: parallelize map, results stored in mapped_data
-    shuffle_and_sort_func(mapped_data)
-    reduce_func()
+def reduce_func(grouped_data):
+    return {customer_id: sum(amounts) for customer_id, values in grouped_data.items()}
 
-def main():
-    #data = get_user_input()
-    #result = map_reduce()
-    #output_result(result)
-    return
+def map_reduce(transactions):
+    with Pool() as pool:
+        mapped_data = pool.map(map_func, transactions)
+    flat_mapped_data = [pair for sublist in mapped_data for pair in sublist]
+    grouped_data = shuffle_and_sort_func(flat_mapped_data)
+    return reduce_func(grouped_data)
 
-if __name__ == "__main__":
-    main()
+
 
