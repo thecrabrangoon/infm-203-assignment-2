@@ -61,10 +61,17 @@ def map_func(transaction, transaction_format):
         raise RuntimeError(f"Unable to cast amount to integer in transaction {transaction}") from e
     return [(customer_id, amount)]
 
+def shuffle_and_sort_func(mapped_data):
+    grouped_data = defaultdict(list)
+    for key, value in mapped_data:
+        grouped_data[key].append(value)
+    return grouped_data
+
 def map_reduce():
     transanction_format = re.compile(r"^(\w*)\, (\d*)$")
     map_func(transaction, transaction_format)
-    shuffle_and_sort_func()
+    # TODO: parallelize map, results stored in mapped_data
+    shuffle_and_sort_func(mapped_data)
     reduce_func()
 
 def main():
