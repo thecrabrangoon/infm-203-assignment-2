@@ -1,6 +1,6 @@
-"""map_reduce module -- MapReduce implementation for customer transactions.
+"""mapreduce module -- MapReduce implementation for customer transactions.
 
-The map_reduce module implements a simple MapReduce process with mapping 
+The mapreduce module implements a simple MapReduce process with mapping 
 parallelization.
 
 Functions:
@@ -15,6 +15,14 @@ Transaction amount is always a whole number and can be cast to an integer.
 Customer ID is case sensitive.
 Customer ID is unique to each individual customer.
 """
+
+"""TODO:
+Incorrectly formatted transaction does not cause whole MapReduce to fail
+Update README with instructions on how to run
+Implement pytests
+"""
+
+
 
 from collections import defaultdict
 from multiprocessing import Pool
@@ -110,7 +118,12 @@ def map_reduce(transactions):
 
     Return Value:
     Result of MapReduce implementation, dict where key is customer ID str, value is int sum of transaction amount for that customer.
+    
+    Exceptions Raised:
+    Raises RuntimeError if transactions argument input is not type list.
     """
+    if type(transactions) != list:
+        raise RuntimeError("Input to map_reduce must be a list of transaction strings.")
     with Pool() as pool:
         mapped_data = pool.map(_map_func, transactions)
     flat_mapped_data = [pair for sublist in mapped_data for pair in sublist]
