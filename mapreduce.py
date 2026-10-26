@@ -31,7 +31,7 @@ Customer_ID must be alphanumeric word.
 Amount must be numeric integer.
 """
 
-def map_func(transaction):
+def _map_func(transaction):
     """Map transaction amounts by customer ID.
 
     First step of MapReduce implementation.
@@ -60,7 +60,7 @@ def map_func(transaction):
         raise RuntimeError(f"Unable to cast amount to integer in transaction {transaction}") from e
     return [(customer_id, amount)]
 
-def shuffle_and_sort_func(mapped_data):
+def _shuffle_and_sort_func(mapped_data):
     """Group mapped transaction amount data based on customer ID.
 
     Second step of MapReduce implementation.
@@ -80,7 +80,7 @@ def shuffle_and_sort_func(mapped_data):
         grouped_data[key].append(value)
     return grouped_data
 
-def reduce_func(grouped_data):
+def _reduce_func(grouped_data):
     """Process grouped data to sum total transaction amount per customer ID.
 
     Third and final step of MapReduce implementation.
@@ -112,10 +112,10 @@ def map_reduce(transactions):
     Result of MapReduce implementation, dict where key is customer ID str, value is int sum of transaction amount for that customer.
     """
     with Pool() as pool:
-        mapped_data = pool.map(map_func, transactions)
+        mapped_data = pool.map(_map_func, transactions)
     flat_mapped_data = [pair for sublist in mapped_data for pair in sublist]
-    grouped_data = shuffle_and_sort_func(flat_mapped_data)
-    return reduce_func(grouped_data)
+    grouped_data = _shuffle_and_sort_func(flat_mapped_data)
+    return _reduce_func(grouped_data)
 
 
 
