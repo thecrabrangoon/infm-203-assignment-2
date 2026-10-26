@@ -16,14 +16,6 @@ Customer ID is case sensitive.
 Customer ID is unique to each individual customer.
 """
 
-"""TODO:
-Incorrectly formatted transaction does not cause whole MapReduce to fail
-Update README with instructions on how to run
-Implement pytests
-"""
-
-
-
 from collections import defaultdict
 from multiprocessing import Pool
 import re
