@@ -1,16 +1,25 @@
-from mapreduce import map_reduce
+"""main module
 
-'''
-Please input your data into the transactions_data list
+main function for running MapReduce implementation found in the mapreduce module.
 
-e.g.
+Input data should be stored in transactions_data list. This is a list of strings,
+with each transaction string matching the format "Customer_ID, Amount". Please
+see the mapreduce module for further details.
+
+Example values for transactions_data:
+
 transactions_data = [
     "Amber, 143",
     "Zachary, 68",
     "Amber, 27",
     "Rosie, 8"
 ]
-'''
+"""
+
+from mapreduce import map_reduce
+
+
+
 transactions_data = [
     "Alice, 20",
     "Bob, 50",
